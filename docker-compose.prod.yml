@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mywebsite-db
+    restart: unless-stopped
+    env_file: db.env                 # dibuat sekali saat deploy pertama, tidak ditimpa
+    ports:
+      - "127.0.0.1:3306:3306"        # akses dari laptop via SSH tunnel
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    image: ${IMAGE}:${TAG:-latest}
+    container_name: mywebsite-app
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certs:/etc/nginx/ssl
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
