@@ -14,11 +14,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "3306:3306"     # ganti "3307:3306" jika port 3306 di laptop sudah terpakai
+      - "3306:3306"     
     volumes:
-      - mysql_data:/var/lib/mysql        # data MySQL persisten
-      - ./src:/var/www/mywebsite         # source web
-      - ./certs:/etc/nginx/ssl           # sertifikat SSL (persisten, bisa di-import ke browser)
+      - mysql_data:/var/lib/mysql        
+      - ./src:/var/www/mywebsite         
 
 volumes:
   mysql_data:

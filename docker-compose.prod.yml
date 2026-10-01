@@ -22,7 +22,7 @@ services:
       DB_HOST: db
       DB_PORT: "3306"
     ports:
-      - "80:80"
+      - "8080:80"
       - "443:443"
     volumes:
       - ./certs:/etc/nginx/ssl
