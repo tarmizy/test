@@ -1,0 +1,24 @@
+services:
+  mywebsite:
+    build: .
+    image: mywebsite:latest
+    container_name: mywebsite
+    hostname: mywebsite.local
+    restart: unless-stopped
+    stop_grace_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mywebsite
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3306:3306"     # ganti "3307:3306" jika port 3306 di laptop sudah terpakai
+    volumes:
+      - mysql_data:/var/lib/mysql        # data MySQL persisten
+      - ./src:/var/www/mywebsite         # source web
+      - ./certs:/etc/nginx/ssl           # sertifikat SSL (persisten, bisa di-import ke browser)
+
+volumes:
+  mysql_data:
